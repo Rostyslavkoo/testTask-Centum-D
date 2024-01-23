@@ -30,7 +30,9 @@
 		</v-navigation-drawer>
 
 		<v-main class="d-flex align-center">
-			<slot></slot>
+			<v-card class="w-100 my-1 mx-2">
+				<slot></slot>
+			</v-card>
 		</v-main>
 	</v-layout>
 </template>
