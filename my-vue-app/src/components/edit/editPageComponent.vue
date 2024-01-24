@@ -39,7 +39,7 @@ import { onMounted } from 'vue';
 import { ref, computed } from 'vue';
 import moment from 'moment';
 import myTable from '../my-table/myTable.vue';
-import { useEditCurrencyStore } from './../stores/editedCurrency';
+import { useEditCurrencyStore } from './../../stores/editedCurrency';
 
 export default {
 	components: { myTable },

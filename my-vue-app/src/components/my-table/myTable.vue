@@ -46,7 +46,7 @@
 <script>
 import { ref, toRefs } from 'vue';
 import editCurrencyDialog from './editCurrencyDialog.vue';
-import { useEditCurrencyStore } from './../stores/editedCurrency';
+import { useEditCurrencyStore } from './../../stores/editedCurrency';
 
 export default {
 	components: { editCurrencyDialog },
