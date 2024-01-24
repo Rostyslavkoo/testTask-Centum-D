@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<v-row justify="space-between" align="center" class="mr-1">
-			<v-col cols="7">
+			<v-col cols="6">
 				<v-card-title>
 					Офіційний курс гривні щодо іноземних валют
 				</v-card-title>
@@ -18,27 +18,46 @@
 					variant="solo"
 					hide-details="auto"
 					clearable
-                    :disabled="!searchQuery && !getSearchedExchangeList.length"
+					:disabled="!searchQuery && !getSearchedExchangeList.length"
 				></v-autocomplete>
 			</v-col>
-			<v-col cols="2">
-				<v-text-field
-					type="date"
-					v-model="searchDate"
-					density="compact"
-					label="Дата"
-					variant="solo"
-					hide-details="auto"
-					clearable
-				>
-				</v-text-field>
+			<v-col cols="3">
+				<v-menu v-model="dateMenu">
+					<template v-slot:activator="{ props }">
+						<v-text-field
+							readonly
+							v-bind="props"
+							v-model="formattedDate"
+							density="compact"
+							label="Дата"
+							variant="solo"
+							hide-details="auto"
+							clearable
+							:loading="isLoading"
+							:disabled="isLoading"
+                            @click:clear="searchDate = null"
+						/>
+					</template>
+					<v-date-picker
+						hide-header
+						locale="UK"
+						v-model="searchDate"
+						@input="dateMenu = false"
+					></v-date-picker>
+				</v-menu>
 			</v-col>
 		</v-row>
 		<v-card-text>
-			<div class="w-100 text-center font-weight-bold" v-if="!searchDate && !isLoading">
+			<div
+				class="w-100 text-center font-weight-bold"
+				v-if="!searchDate && !isLoading"
+			>
 				Оберіть дату
 			</div>
-			<div class="w-100 text-center font-weight-bold" v-else-if="!getPaginationExchangeList.length && !isLoading">
+			<div
+				class="w-100 text-center font-weight-bold"
+				v-else-if="!getPaginationExchangeList.length && !isLoading"
+			>
 				Немає даних
 			</div>
 			<my-table v-else :items="getPaginationExchangeList" />
@@ -71,11 +90,14 @@ export default {
 		const limit = 10;
 		const searchDate = ref();
 		const searchQuery = ref();
+		const dateMenu = ref(false);
+		const formattedDate = ref('');
+
 		const getExchangeList = async searchDate => {
 			try {
 				isLoading.value = true;
 				const result = await exchangeService.getExchange({ date: searchDate });
-                exchangeList.value = result;
+				exchangeList.value = result;
 				totalPage.value = Math.ceil(exchangeList.value.length / limit);
 			} catch (e) {
 				console.log(e);
@@ -84,13 +106,16 @@ export default {
 			}
 		};
 		watch(searchDate, elem => {
-            if(!elem){
-                searchQuery.value = ''
-                exchangeList.value  = []
-            }
-			getExchangeList(getPropertyformat(elem));
+			if (!elem) {
+				searchQuery.value = '';
+				exchangeList.value = [];
+                return
+			}
+
+			formattedDate.value = moment(elem).format('DD.MM.Y');
+			getExchangeList(getPropertyformatToSend(elem));
 		});
-		const getPropertyformat = date => {
+		const getPropertyformatToSend = date => {
 			return moment(date).format('YMMDD', { trim: false });
 		};
 		const getPaginationExchangeList = computed(() => {
@@ -121,6 +146,8 @@ export default {
 			searchQuery,
 			searchDate,
 			getSearchedExchangeList,
+			dateMenu,
+			formattedDate,
 		};
 	},
 };
