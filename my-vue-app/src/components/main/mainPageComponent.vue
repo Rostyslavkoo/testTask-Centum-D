@@ -22,7 +22,7 @@
 			</v-col>
 		</v-row>
 		<v-card-subtitle>
-			на дату {{ moment().locale('uk').format('LL') }}
+			на дату {{ moment().format('DD.MM.Y') }}
 		</v-card-subtitle>
 		<v-card-text>
 			<my-table :items="getPaginationExchangeList" />
@@ -59,7 +59,7 @@ export default {
 		const getExchangeList = async () => {
 			try {
 				isLoading.value = true;
-				const result = await exchangeService.getExchange({ date: '20230123' });
+				const result = await exchangeService.getExchange({ date: moment().format('YMMDD', { trim: false }) });
 
 				exchangeList.value = result;
 				totalPage.value = Math.ceil(exchangeList.value.length / limit);
