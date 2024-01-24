@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+
 const LOCAL_STORAGE_KEY = 'edit-currenct';
 const defaultList = [];
 
@@ -22,7 +23,6 @@ export const useEditCurrencyStore = defineStore('edit-currency', {
 				alert('Ця валюта вже знаходиться в редагованих');
 				return;
 			}
-			console.log(isContainCurrency);
 			this.editCurrenctList.push(item);
 			localStorage.setItem(
 				LOCAL_STORAGE_KEY,

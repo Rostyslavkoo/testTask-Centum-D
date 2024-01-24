@@ -20,7 +20,7 @@
 			</v-col>
 		</v-row>
 		<v-card-text>
-			<my-table :items="getPaginationExchangeList" type="edit"/>
+			<my-table :items="getPaginationExchangeList" type="edit" />
 		</v-card-text>
 		<v-card-actions v-if="!searchQuery">
 			<v-pagination
@@ -70,8 +70,7 @@ export default {
 			}
 		});
 		onMounted(() => {
-			
-			exchangeList.value = editCurrencyStore.getEditList
+			exchangeList.value = editCurrencyStore.getEditList;
 			totalPage.value = Math.ceil(exchangeList.value.length / limit);
 		});
 		return {

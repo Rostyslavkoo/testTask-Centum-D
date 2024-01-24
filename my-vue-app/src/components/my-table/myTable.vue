@@ -55,6 +55,7 @@ export default {
 		const visibleEditdialog = ref(false);
 		const editCurrencyStore = useEditCurrencyStore();
 		const { type } = toRefs(props);
+
 		const onSave = item => {
 			if (type.value === 'edit') {
 				editCurrencyStore.changeItem(item.r030, item);
@@ -65,6 +66,7 @@ export default {
 			visibleEditdialog.value = false;
 			console.log('save');
 		};
+
 		const onChooseCurrency = item => {
 			chosenItem.value = item;
 			visibleEditdialog.value = true;
